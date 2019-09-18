@@ -1,74 +1,16 @@
 const { ApolloServer, gql } = require("apollo-server");
-var _ = require("lodash");
+var sequelize = require("sequelize");
+const { Books, Sellers, Authors, SellersBooks } = require("./models/index");
 
-let books = [
-  {
-    isbn: "9781593275846",
-    title: "Eloquent JavaScript, Second Edition",
-    subtitle: "A Modern Introduction to Programming",
-    authorId: 6938033702
-  },
-  {
-    isbn: "9781449331818",
-    title: "Learning JavaScript Design Patterns",
-    subtitle: "A JavaScript and jQuery Developer's Guide",
-    authorId: 6336138879
-  },
-  {
-    isbn: "9781449365035",
-    title: "Speaking JavaScript",
-    subtitle: "An In-Depth Guide for Programmers",
-    authorId: 4113957124
-  },
-  {
-    isbn: "9781491950296",
-    title: "Programming JavaScript Applications",
-    subtitle:
-      "Robust Web Architecture with Node, HTML5, and Modern JS Libraries",
-    authorId: 9538356997
-  },
-  {
-    isbn: "9781593277574",
-    title: "Understanding ECMAScript 6",
-    subtitle: "The Definitive Guide for JavaScript Developers",
-    authorId: 9538356997
-  },
-  {
-    isbn: "9781491904244",
-    title: "You Don't Know JS",
-    subtitle: "ES6 & Beyond",
-    authorId: 8488125878
-  }
-];
-let authors = [
-  {
-    id: 9538356997,
-    name: "Nicholas C. Zakas"
-  },
-  {
-    id: 8488125878,
-    name: "Kyle Simpson"
-  },
-  {
-    id: 6938033702,
-    name: "Marijn Haverbeke"
-  },
-  {
-    id: 6336138879,
-    name: "Addy Osmani"
-  },
-  {
-    id: 4113957124,
-    name: "Axel Rauschmayer"
-  }
-];
 // The GraphQL schema
 const typeDefs = gql`
   type Book {
+    id: ID!
     isbn: String
     title: String
     subtitle: String
     author: Author
+    seller: [Seller]
   }
 
   type Author {
@@ -77,30 +19,74 @@ const typeDefs = gql`
     book: [Book]
   }
 
+  type Seller {
+    id: ID!
+    name: String
+    book: [Book]
+  }
+
   type Query {
     author: [Author]
     book: [Book]
+    seller: [Seller]
   }
 `;
 
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    author(parent, args, context, info) {
-      return authors;
+    async author(parent, args, context, info) {
+      return await Authors.findAll({ raw: true });
     },
-    book() {
-      return books;
+    async book() {
+      return await Books.findAll({ raw: true });
+    },
+    async seller() {
+      return await Sellers.findAll({ raw: true });
     }
   },
   Author: {
-    book(author) {
-      return _.filter(books, { authorId: author.id });
+    async book(author) {
+      return await Books.findAll({
+        where: {
+          authorId: author.id
+        },
+        raw: true
+      });
     }
   },
   Book: {
-    author(book) {
-      return _.find(authors, { id: book.authorId });
+    async author(book) {
+      return await Authors.findOne({
+        where: {
+          id: book.authorId
+        },
+        raw: true
+      });
+    },
+    async seller(book) {
+      return await Sellers.findAll({
+        include: [
+          {
+            model: SellersBooks,
+            where: { bookId: book.id }
+          }
+        ],
+        raw: true
+      });
+    }
+  },
+  Seller: {
+    async book(seller) {
+      return await Books.findAll({
+        include: [
+          {
+            model: SellersBooks,
+            where: { sellerId: seller.id }
+          }
+        ],
+        raw: true
+      });
     }
   }
 };

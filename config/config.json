@@ -1,0 +1,27 @@
+{
+  "development": {
+    "username": "kanishka",
+    "password": "kanishka",
+    "database": "gqlapollo_dev",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false,
+    "logging": false
+  },
+  "test": {
+    "username": "kanishka",
+    "password": "kanishka",
+    "database": "gqlapollo_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "kanishka",
+    "password": "kanishka",
+    "database": "gqlapollo_prod",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }
+}
