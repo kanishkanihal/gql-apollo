@@ -1,0 +1,12 @@
+type Book {
+  id: ID!
+  isbn: String
+  title: String
+  subtitle: String
+  author: Author
+  seller: [Seller]
+}
+
+extend type Query {
+  book: [Book]
+}

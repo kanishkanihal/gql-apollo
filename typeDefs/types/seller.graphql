@@ -1,0 +1,13 @@
+type Seller {
+  id: ID!
+  name: String
+  book: [Book]
+}
+extend type Query {
+  seller: [Seller]
+}
+extend type Mutation {
+  addSeller(name: String!): Seller!
+  updateSeller(id: ID!, name: String!): Int!
+  deleteSeller(id: ID!): Int!
+}
