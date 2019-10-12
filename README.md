@@ -41,7 +41,7 @@ query {
   }
 }
 
-#Add author
+# Add author
 mutation {
   addAuthor(
     name: "Martin Wickramasinghe"
@@ -51,15 +51,15 @@ mutation {
   }
 }
 
-#update author
+# update author
 mutation{
   updateAuthor(id:6,name:"Lama Hewage Don Martin Wickramasinghe")
 }
-#delete author
+# delete author
 mutation{
   deleteAuthor(id:6)
 }
-#Add book
+# Add book
 mutation {
   addBook(
     isbn: "05479532456", 
@@ -80,7 +80,7 @@ mutation {
     }
   }
 }
-#Update book
+# Update book
 mutation {
   updateBook(
     id:3,
@@ -91,11 +91,11 @@ mutation {
     seller:[1,4]
 	)
 }
-#Delete book
+# Delete book
 mutation{
   deleteBook(id: 32)
 }
-#Add seller
+# Add seller
 mutation{
   addSeller(
     name: "MD Gunasena"
@@ -103,14 +103,14 @@ mutation{
     name
   }
 }
-#Update seller
+# Update seller
 mutation{
   updateSeller(
     id:6,
   	name:"MDG"
   )
 }
-#Delete seller
+# Delete seller
 mutation{
   deleteSeller(id:6)
 }
