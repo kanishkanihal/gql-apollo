@@ -10,3 +10,23 @@ type Book {
 extend type Query {
   book: [Book]
 }
+
+extend type Mutation {
+  addBook(
+    isbn: String!
+    title: String!
+    subtitle: String
+    author: Int
+    seller: [Int]
+  ): Book!
+
+  updateBook(
+    id: ID!
+    isbn: String
+    title: String
+    subtitle: String
+    author: Int
+    seller: [Int]
+  ): Int!
+  deleteBook(id: ID!): Int!
+}

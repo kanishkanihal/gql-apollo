@@ -6,7 +6,8 @@ const {
 } = require("apollo-server");
 
 const { typeDefs } = require("./typeDefs/index");
-const { resolvers } = require("./resolvers");
+//const { resolvers } = require("./resolvers");
+const { resolvers } = require("./resolvers/index");
 
 // A map of functions which return data for the schema.
 
